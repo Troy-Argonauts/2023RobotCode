@@ -30,7 +30,11 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
         LEDSystem led = new LEDSystem();
-        led.purpleCube();
+        try {
+            led.ledTestOn();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
