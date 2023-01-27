@@ -6,6 +6,7 @@
 package org.troyargonauts;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import org.troyargonauts.subsystems.LEDSystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

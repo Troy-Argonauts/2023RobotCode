@@ -8,6 +8,7 @@ package org.troyargonauts;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.troyargonauts.subsystems.LEDSystem;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,6 +29,9 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+        LEDSystem led = new LEDSystem();
+        led.purpleCube();
+
     }
 
     @Override
