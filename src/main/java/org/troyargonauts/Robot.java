@@ -8,7 +8,7 @@ package org.troyargonauts;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.troyargonauts.subsystems.LEDSystem;
+import org.troyargonauts.subsystems.Gearbox;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,19 +23,14 @@ public class Robot extends TimedRobot {
     private Command autonomousCommand;
     
     private RobotContainer robotContainer;
+    private static Gearbox gearbox;
 
     @Override
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
-        LEDSystem led = new LEDSystem();
-        try {
-            led.ledTestOn();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        gearbox = new Gearbox();
     }
 
     @Override
@@ -90,4 +85,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void simulationPeriodic() {}
+
+    public static Gearbox getGearbox() {
+        if (gearbox == null) {
+            gearbox = new Gearbox();
+        }
+        return gearbox;
+    }
 }
