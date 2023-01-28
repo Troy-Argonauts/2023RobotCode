@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSystem extends SubsystemBase{
 
-    public static int r;
-    public static int b;
-    public static int g;
+    public static int r = 255;
+    public static int g = 0;
+    public static int b = 0;
+
     public static boolean cubeNeeded = true;
     public static boolean coneNeeded = false;
+
     private final CANdle candle;
     public ErrorCode error;
     public final CANdleConfiguration config;
@@ -28,7 +30,9 @@ public class LEDSystem extends SubsystemBase{
     public void ledTestOn() throws InterruptedException {
         for (int i = 0; i < 255; i++) {
             b += 1;
-            r -= 1;
+            if(r != 0) {
+                r -= 1;
+            }
             candle.setLEDs(r, g, b);
         }
         error = candle.getLastError();
