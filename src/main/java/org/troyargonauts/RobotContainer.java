@@ -6,7 +6,8 @@
 package org.troyargonauts;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import org.troyargonauts.subsystems.LEDSystem;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import org.troyargonauts.libs.ArgoController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -14,10 +15,9 @@ import org.troyargonauts.subsystems.LEDSystem;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer
-{
-    public RobotContainer()
-    {
+public class RobotContainer {
+    ArgoController driver = new ArgoController(0);
+    public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
     }
@@ -26,7 +26,11 @@ public class RobotContainer
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings()
     {
-
+        Robot.getGearbox().setDefaultCommand(
+                new RunCommand(() ->  {
+                    Robot.getGearbox().cheesyDrive((driver.getRightJoystickX() * 0.5), driver.getLeftJoystickY(), 0.25);
+                }, Robot.getGearbox())
+        );
     }
     
     
