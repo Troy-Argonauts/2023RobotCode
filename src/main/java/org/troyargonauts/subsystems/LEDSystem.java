@@ -27,7 +27,7 @@ public class LEDSystem extends SubsystemBase{
 
     }
 
-    public void ledTestOn() throws InterruptedException {
+    public void ledTestOn()  {
         for (int i = 0; i < 255; i++) {
             b += 1;
             if(r != 0) {
@@ -35,8 +35,7 @@ public class LEDSystem extends SubsystemBase{
             }
             candle.setLEDs(r, g, b);
         }
-        error = candle.getLastError();
-        System.out.println(error);
+
     }
 
     public void ledStandby(int ledLength) {
