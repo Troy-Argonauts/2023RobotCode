@@ -34,10 +34,7 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
 
         LEDSystem led = new LEDSystem();
-//        led.ledStandby(9);
-        int[] black = new int[184, 134, 11]
-        int[] gold = new int[51, 51, 58]
-        led.argoColors(black, gold, 5);
+        led.argoColors(9);
 
     }
 
