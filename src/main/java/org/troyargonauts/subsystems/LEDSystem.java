@@ -17,9 +17,17 @@ public class LEDSystem extends SubsystemBase {
     public final static int goldG = 51;
     public final static int goldB = 58;
 
-    public static int r = 255;
-    public static int g = 0;
-    public static int b = 0;
+    public final static int yellowR = 255;
+    public final static int yellowG = 255;
+    public final static int yellowB = 0;
+
+    public final static int purpleR = 70;
+    public final static int purpleG = 0;
+    public final static int purpleB = 106;
+
+    public static int red = 255;
+    public static int green = 0;
+    public static int blue = 0;
 
     public static boolean cubeNeeded = false;
     public static boolean coneNeeded = false;
@@ -37,22 +45,21 @@ public class LEDSystem extends SubsystemBase {
     }
 
     public void ledTestOn() {
-
+        blue+=1;
         for (int i = 0; i < 255; i++) {
-            b += 1;
-            try {
+              try {
                 wait(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            if (r != 0) {
-                r -= 1;
-                System.out.println(r);
+            if (red != 0) {
+                red -= 1;
+                System.out.println(red);
             }
-            r = 184;
-            g = 134;
-            b = 11;
-            candle.setLEDs(r, g, b);
+            red = 184;
+            green = 134;
+            blue = 11;
+            candle.setLEDs(red, green, blue);
         }
     }
 
@@ -73,16 +80,16 @@ public class LEDSystem extends SubsystemBase {
             for (int j = 0; j < loops; j++) {
                 if (blackLoop) {
                     for (int i = 0; i < 255; i++) {
-                        if (r != blackR) {
-                            r += 1;
+                        if (red != blackR) {
+                            red += 1;
                         }
-                        if (g != blackG) {
-                            g += 1;
+                        if (green != blackG) {
+                            green += 1;
                         }
-                        if (b != blackB) {
-                            b += 1;
+                        if (blue != blackB) {
+                            blue += 1;
                         }
-                        if (r == blackR && b == blackB && g == blackG) {
+                        if (red == blackR && blue == blackB && green == blackG) {
                             try {
                                 wait(2000);
                             } catch (InterruptedException ignored) {
@@ -92,9 +99,9 @@ public class LEDSystem extends SubsystemBase {
                         }
 
 
-                        System.out.println(r);
-                        System.out.println(g);
-                        System.out.println(b);
+                        System.out.println(red);
+                        System.out.println(green);
+                        System.out.println(blue);
 
                         try {
                             wait(100);
@@ -102,23 +109,23 @@ public class LEDSystem extends SubsystemBase {
 
                         }
 
-                        candle.setLEDs(r, g, b);
+                        candle.setLEDs(red, green, blue);
                     }
                 }
 
                 // Switches color from "Black" (dark gray) to gold
                 else {
                     for (int i = 0; i < 255; i++) {
-                        if (r != goldR) {
-                            r += 1;
+                        if (red != goldR) {
+                            red += 1;
                         }
-                        if (g != goldG) {
-                            g += 1;
+                        if (green != goldG) {
+                            green += 1;
                         }
-                        if (b != goldB) {
-                            b += 1;
+                        if (blue != goldB) {
+                            blue += 1;
                         }
-                        if (r == goldR && b == goldB && g == goldG) {
+                        if (red == goldR && blue == goldB && green == goldG) {
                             try {
                                 wait(2000);
                             } catch (InterruptedException ignored) {
@@ -128,9 +135,9 @@ public class LEDSystem extends SubsystemBase {
                         }
 
 
-                        System.out.println(r);
-                        System.out.println(g);
-                        System.out.println(b);
+                        System.out.println(red);
+                        System.out.println(green);
+                        System.out.println(blue);
 
                         try {
                             wait(100);
@@ -138,7 +145,7 @@ public class LEDSystem extends SubsystemBase {
 
                         }
 
-                        candle.setLEDs(r, g, b);
+                        candle.setLEDs(red, green, blue);
                     }
                 }
             }
@@ -150,11 +157,11 @@ public class LEDSystem extends SubsystemBase {
 
                 candle.setLEDs(70, 0, 106);
                 try {
-                    wait(500);
+                    wait(650);
                 } catch (InterruptedException ignored) {
 
                 }
-                candle.setLEDs(255, 255, 255);
+                candle.setLEDs(0, 0, 0);
 
             }
 
@@ -168,12 +175,12 @@ public class LEDSystem extends SubsystemBase {
                 candle.setLEDs(0, 255, 255);
 
                 try {
-                    wait(500);
+                    wait(650);
 
                 } catch (InterruptedException ignored) {
 
                 }
-                candle.setLEDs(255, 255, 255);
+                candle.setLEDs(0, 0, 0);
             }
         }
 

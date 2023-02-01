@@ -26,6 +26,8 @@ public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
     private static Gearbox gearbox;
 
+    private static LEDSystem led;
+
     @Override
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -102,5 +104,12 @@ public class Robot extends TimedRobot {
             gearbox = new Gearbox();
         }
         return gearbox;
+    }
+
+    public static LEDSystem getLEDS(){
+        if(led == null){
+            led = new LEDSystem();
+        }
+        return led;
     }
 }
