@@ -5,6 +5,7 @@
 
 package org.troyargonauts;
 
+import org.troyargonauts.subsystems.DriveTrain;
 import org.troyargonauts.subsystems.PneumaticsSystem;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,7 +24,9 @@ public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
 
-    static PneumaticsSystem pneumatics;
+    private static PneumaticsSystem pneumatics;
+
+    private static DriveTrain driveTrain;
 
     @Override
     public void robotInit() {
@@ -32,6 +35,7 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
 
         pneumatics = new PneumaticsSystem();
+        driveTrain = new DriveTrain();
     }
 
     @Override
@@ -92,5 +96,12 @@ public class Robot extends TimedRobot {
             pneumatics = new PneumaticsSystem();
         }
         return pneumatics;
+    }
+
+    public static DriveTrain getDriveTrain() {
+        if (driveTrain == null) {
+            driveTrain = new DriveTrain();
+        }
+        return driveTrain;
     }
 }
