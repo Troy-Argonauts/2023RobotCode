@@ -32,6 +32,8 @@ public class LEDSystem extends SubsystemBase {
     public static boolean cubeNeeded = false;
     public static boolean coneNeeded = false;
 
+    public static boolean lose = false;
+
     private final CANdle candle;
     public CANdleConfiguration config;
 
@@ -181,6 +183,20 @@ public class LEDSystem extends SubsystemBase {
 
                 }
                 candle.setLEDs(0, 0, 0);
+            }
+        }
+
+        public void losingState () {
+            if(lose) {
+
+                candle.setLEDs(255, 0,0)
+
+                        try{
+                            wait(650);
+                        } catch (InterruptedException ignored) {
+
+                        }
+                        candle.setLEDs(255, 17, 4);
             }
         }
 
