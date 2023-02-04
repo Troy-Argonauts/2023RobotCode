@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
-import java.util.concurrent.CompletableFuture;
+import com.revrobotics.ColorSensorV3;
 
 
 /**
@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     private static LEDSystem led;
 
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     @Override
     public void robotInit() {
@@ -68,21 +68,21 @@ public class Robot extends TimedRobot {
          * an object is the more light from the surroundings will bleed into the
          * measurements and make it difficult to accurately determine its color.
          */
-        Color detectedColor = m_colorSensor.getColor();
+        Color detectedColor = colorSensor.getColor();
 
         /**
          * The sensor returns a raw IR value of the infrared light detected.
          */
-        double IR = m_colorSensor.getIR();
+        double IR = colorSensor.getIR();
 
         /**
          * Open Smart Dashboard or Shuffleboard to see the color detected by the
          * sensor.
          */
-        SmartDashboard.putNumber("Red", detectedColor.red);
-        SmartDashboard.putNumber("Green", detectedColor.green);
-        SmartDashboard.putNumber("Blue", detectedColor.blue);
-        SmartDashboard.putNumber("IR", IR);
+        SmartDashboard.putString("Color", detectedColor.red + ", " + detectedColor.green + ", " + detectedColor.blue);
+//        SmartDashboard.putNumber("Green", detectedColor.green);
+//        SmartDashboard.putNumber("Blue", detectedColor.blue);
+//        SmartDashboard.putNumber("IR", IR);
 
         /**
          * In addition to RGB IR values, the color sensor can also return an
@@ -95,9 +95,9 @@ public class Robot extends TimedRobot {
          * or provide a threshold for when an object is close enough to provide
          * accurate color values.
          */
-        int proximity = m_colorSensor.getProximity();
-
-        SmartDashboard.putNumber("Proximity", proximity);
+//        int proximity = colorSensor.getProximity();
+//
+//        SmartDashboard.putNumber("Proximity", proximity);
     }
 
     @Override
