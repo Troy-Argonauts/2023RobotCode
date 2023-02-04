@@ -25,7 +25,6 @@ public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
     private static Gearbox gearbox;
-
     private static LEDSystem led;
 
     @Override
@@ -34,15 +33,7 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         gearbox = new Gearbox();
         robotContainer = new RobotContainer();
-
         LEDSystem led = new LEDSystem();
-        led.argoColors(9);
-
-//        led.ledStandby(9);
-
-
-        led.argoColors(5);
-
 
     }
 
