@@ -189,7 +189,7 @@ public class LEDSystem extends SubsystemBase {
         public void losingState () {
             if(lose) {
 
-                candle.setLEDs(255, 0,0)
+                candle.setLEDs(255, 0,0);
 
                         try{
                             wait(650);
