@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSystem extends SubsystemBase{
 
-    public static int r;
-    public static int b;
-    public static int g;
-    public static boolean cubeNeeded = true;
+    public static int r = 255;
+    public static int b = 0;
+    public static int g = 0;
+    public static boolean cubeNeeded = false;
     public static boolean coneNeeded = false;
     private final CANdle candle;
     public ErrorCode error;
@@ -25,16 +25,14 @@ public class LEDSystem extends SubsystemBase{
 
     }
 
-    public void ledTestOn() throws InterruptedException {
+    public void ledTestOn() {
         for (int i = 0; i < 255; i++) {
-            b += 1;
             r -= 1;
+            b += 1;
             candle.setLEDs(r, g, b);
         }
-        error = candle.getLastError();
-        System.out.println(error);
-    }
 
+    }
     public void ledStandby(int ledLength) {
         if (coneNeeded == false && cubeNeeded == false) {
             config.brightnessScalar = 0.5; // dim the LEDs to half brightness
@@ -66,12 +64,12 @@ public class LEDSystem extends SubsystemBase{
         if (coneNeeded == true) {
 
                 candle.setLEDs(0, 255, 255);
-                /*--try {
+                try {
                     wait(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                candle.setLEDs(255, 255, 255); --*/
+                candle.setLEDs(255, 255, 255);
         }
     }
 
