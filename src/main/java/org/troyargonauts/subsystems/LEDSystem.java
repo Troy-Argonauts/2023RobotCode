@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class LEDSystem extends SubsystemBase {
-
+    // The Variables
     public final static int blackR = 184;
     public final static int blackG = 134;
     public final static int blackB = 11;
@@ -40,13 +40,13 @@ public class LEDSystem extends SubsystemBase {
     }
 
     public void ledTestOn(boolean True) {
-        if(True == true) {
+        if(True) {
             candle.setLEDs(255, 255, 255);
         }
     }
 
     public void ledStandby(int ledLength, boolean True) {
-        if(True == true) {
+        if(True) {
             // dim the LEDs to half brightness
             config.brightnessScalar = 0.5;
             candle.configAllSettings(config);
@@ -57,32 +57,32 @@ public class LEDSystem extends SubsystemBase {
 
     // We could maybe set it up so that if we win, these are the lights that will display
     public void argoColors(boolean win) {
-        if(win == true) {
+        if(win) {
             candle.setLEDs(goldR, goldG, goldB);
         }
     }
     // Switches color from "Black" (dark gray) to gold
 
     public void purpleCube(boolean purpleCube) {
-        if(purpleCube == true) {
+        if(purpleCube) {
             candle.setLEDs(purpleR, purpleG, purpleB);
         }
     }
 
     public void yellowCone(boolean yellowCone) {
-        if(yellowCone == true) {
+        if(yellowCone) {
             candle.setLEDs(yellowR, yellowG, yellowB);
         }
     }
 
     public void ledOff(boolean off) {
-        if(off == true) {
+        if(off) {
             candle.setLEDs(0, 0, 0);
         }
     }
 
     public void losingState(boolean lose) {
-        if(lose == true) {
+        if(lose) {
             candle.setLEDs(255, 17, 4);
         }
     }

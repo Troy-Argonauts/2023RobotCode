@@ -17,6 +17,7 @@ import org.troyargonauts.libs.ArgoController;
  */
 public class RobotContainer {
     ArgoController driver = new ArgoController(0);
+    boolean buttonPressed = true;
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
@@ -30,6 +31,12 @@ public class RobotContainer {
                 new RunCommand(() ->  {
                     Robot.getGearbox().cheesyDrive((driver.getRightJoystickX() * 0.5), driver.getLeftJoystickY(), 0.25);
                 }, Robot.getGearbox())
+        );
+
+        Robot.getLEDS().setDefaultCommand(
+                new RunCommand(() ->{
+                    Robot.getLEDS().purpleCube(buttonPressed);
+                }, Robot.getLEDS())
         );
     }
     
