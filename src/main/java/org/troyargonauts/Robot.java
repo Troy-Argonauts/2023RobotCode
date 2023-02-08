@@ -36,8 +36,9 @@ public class Robot extends TimedRobot {
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
-    private final Color kYellow = new Color(1, 1, 0);
-    private final Color kBlue = new Color(0, 0, 1);
+    private final Color kYellow = new Color(0.32, 0.52, 0.14);
+    private final Color kPurple = new Color(0.18, 0.31, 0.51);
+    private final Color kMiddle = new Color(0.3, 0.5, 0.24);
 
     private final ColorMatch colorMatch = new ColorMatch();
 
@@ -51,7 +52,8 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
 
         colorMatch.addColorMatch(kYellow);
-        colorMatch.addColorMatch(kBlue);
+        colorMatch.addColorMatch(kPurple);
+        colorMatch.addColorMatch(kMiddle);
     }
 
     @Override
@@ -74,12 +76,14 @@ public class Robot extends TimedRobot {
         String colorString;
         ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
-        if (match.color == kBlue) {
-            colorString = "Blue";
+        if (match.color == kPurple) {
+            colorString = "Purple";
         } else if (match.color == kYellow){
             colorString = "Yellow";
+        } else if (match.color == kMiddle){
+            colorString = "Nothing";
         } else {
-            colorString = "dle";
+            colorString = "idle";
         }
 
         /**
@@ -92,7 +96,7 @@ public class Robot extends TimedRobot {
          * sensor.
          */
         SmartDashboard.putString("Color", detectedColor.red + ", " + detectedColor.green + ", " + detectedColor.blue);
-        SmartDashboard.putString("Yellow Detected", colorString);
+        SmartDashboard.putString("Color Detected", colorString);
 //        SmartDashboard.putNumber("Green", detectedColor.green);
 //        SmartDashboard.putNumber("Blue", detectedColor.blue);
 //        SmartDashboard.putNumber("IR", IR);

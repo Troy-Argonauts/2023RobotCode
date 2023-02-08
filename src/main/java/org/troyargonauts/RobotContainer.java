@@ -5,10 +5,7 @@
 
 package org.troyargonauts;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import org.troyargonauts.libs.ArgoController;
 
 /**
@@ -36,19 +33,10 @@ public class RobotContainer {
                 }, Robot.getGearbox())
         );
 
-
         Robot.getLEDs().setDefaultCommand(
-                new SequentialCommandGroup(
-                        new RunCommand(() -> {
-                            Robot.getLEDs().argoColors(true);
-                        }, Robot.getLEDs()).withTimeout(2)
-                ).repeatedly()
-        );
-        Robot.getLEDs().setDefaultCommand(
-                new RunCommand(() -> {
-                    Robot.getLEDs().ledStandby(7, buttonPressed);
+                new InstantCommand(() -> {
+                    Robot.getLEDs().yellowCone(true);
                 }, Robot.getLEDs())
-
         );
 
     }
