@@ -5,6 +5,8 @@
 
 package org.troyargonauts;
 
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -34,16 +36,22 @@ public class Robot extends TimedRobot {
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
+    private final Color kYellow = new Color(1, 1, 0);
+    private final Color kBlue = new Color(0, 0, 1);
+
+    private final ColorMatch colorMatch = new ColorMatch();
+
     @Override
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         gearbox = new Gearbox();
         robotContainer = new RobotContainer();
+
         LEDSystem led = new LEDSystem();
 
-
-
+        colorMatch.addColorMatch(kYellow);
+        colorMatch.addColorMatch(kBlue);
     }
 
     @Override
@@ -63,6 +71,17 @@ public class Robot extends TimedRobot {
          */
         Color detectedColor = colorSensor.getColor();
 
+        String colorString;
+        ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
+
+        if (match.color == kBlue) {
+            colorString = "Blue";
+        } else if (match.color == kYellow){
+            colorString = "Yellow";
+        } else {
+            colorString = "dle";
+        }
+
         /**
          * The sensor returns a raw IR value of the infrared light detected.
          */
@@ -73,6 +92,7 @@ public class Robot extends TimedRobot {
          * sensor.
          */
         SmartDashboard.putString("Color", detectedColor.red + ", " + detectedColor.green + ", " + detectedColor.blue);
+        SmartDashboard.putString("Yellow Detected", colorString);
 //        SmartDashboard.putNumber("Green", detectedColor.green);
 //        SmartDashboard.putNumber("Blue", detectedColor.blue);
 //        SmartDashboard.putNumber("IR", IR);
@@ -147,7 +167,7 @@ public class Robot extends TimedRobot {
         return gearbox;
     }
 
-    public static LEDSystem getLEDS(){
+    public static LEDSystem getLEDs(){
         if(led == null){
             led = new LEDSystem();
         }

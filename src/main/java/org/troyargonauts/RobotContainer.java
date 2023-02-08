@@ -7,6 +7,7 @@ package org.troyargonauts;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.troyargonauts.libs.ArgoController;
 
 /**
@@ -30,6 +31,14 @@ public class RobotContainer {
                 new RunCommand(() ->  {
                     Robot.getGearbox().cheesyDrive((driver.getRightJoystickX() * 0.5), driver.getLeftJoystickY(), 0.25);
                 }, Robot.getGearbox())
+        );
+
+        Robot.getLEDs().setDefaultCommand(
+                new SequentialCommandGroup(
+                        new RunCommand(() -> {
+                            Robot.getLEDs().argoColors(true);
+                        }, Robot.getLEDs()).withTimeout(2)
+                ).repeatedly()
         );
     }
     
