@@ -61,14 +61,24 @@ public class DriveTrain extends SubsystemBase {
      * @param speed speed of robot
      * @param turn amount we want to turn
      */
-    public void cheesyDrive(double speed, double turn) {
-        frontRight.set((speed + turn) * (speed + turn));
-        frontLeft.set((speed - turn) * (speed - turn));
+    public void cheesyDrive(double speed, double turn, boolean square, double nerf) {
+        if (square) {
+            frontRight.set((speed + turn) * (speed + turn));
+            frontLeft.set((speed - turn) * (speed - turn));
+        } else {
+            frontRight.set((speed + turn) * nerf);
+            frontLeft.set((speed - turn) * nerf);
+        }
     }
 
-    public void tankDrive(double left, double right) {
-        frontRight.set(-right * right);
-        frontLeft.set(-left * left);
+    public void tankDrive(double left, double right, boolean square, double nerf) {
+        if (square) {
+            frontRight.set(-right * right);
+            frontLeft.set(-left * left);
+        } else {
+            frontRight.set(-right * nerf);
+            frontLeft.set(-left * nerf);
+        }
     }
 
     
@@ -131,7 +141,7 @@ public class DriveTrain extends SubsystemBase {
             drivePID,
             () -> getPosition(),
             setpoint * DriveConstants.kDistanceConvertion,
-            output -> cheesyDrive(output, 0),
+            output -> cheesyDrive(output, 0, false, 1),
             Robot.getDrivetrain()
         );
     }
@@ -147,7 +157,7 @@ public class DriveTrain extends SubsystemBase {
             turnPID,
             () -> getAngle(),
             angle,
-            output -> cheesyDrive(0, output),
+            output -> cheesyDrive(0, output, false, 1),
             Robot.getDrivetrain()
         );
     }
