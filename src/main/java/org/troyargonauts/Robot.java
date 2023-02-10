@@ -5,19 +5,13 @@
 
 package org.troyargonauts;
 
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import sensors.ColorSensor;
+
 import org.troyargonauts.subsystems.Gearbox;
 import org.troyargonauts.subsystems.LEDSystem;
-
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-
-import com.revrobotics.ColorSensorV3;
 
 
 /**
@@ -32,15 +26,7 @@ public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
     private static Gearbox gearbox;
     private static LEDSystem led;
-
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
-
-    private final Color kYellow = new Color(0.32, 0.52, 0.14);
-    private final Color kPurple = new Color(0.18, 0.31, 0.51);
-    private final Color kMiddle = new Color(0.3, 0.5, 0.24);
-
-    private final ColorMatch colorMatch = new ColorMatch();
+    private static ColorSensor colorSensor;
 
     @Override
     public void robotInit() {
@@ -48,12 +34,13 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         gearbox = new Gearbox();
         led = new LEDSystem();
+        colorSensor = new ColorSensor();
 
         robotContainer = new RobotContainer();
 
-        colorMatch.addColorMatch(kYellow);
-        colorMatch.addColorMatch(kPurple);
-        colorMatch.addColorMatch(kMiddle);
+        ColorSensor.colorMatch.addColorMatch(ColorSensor.kYellow);
+        ColorSensor.colorMatch.addColorMatch(ColorSensor.kPurple);
+        ColorSensor.colorMatch.addColorMatch(ColorSensor.kMiddle);
     }
 
     @Override
@@ -61,60 +48,13 @@ public class Robot extends TimedRobot {
     {
         CommandScheduler.getInstance().run();
 
-        /**
-         * The method GetColor() returns a normalized color value from the sensor and can be
-         * useful if outputting the color to an RGB LED or similar. To
-         * read the raw color, use GetRawColor().
-         *
-         * The color sensor works best when within a few inches from an object in
-         * well lit conditions (the built in LED is a big help here!). The farther
-         * an object is the more light from the surroundings will bleed into the
-         * measurements and make it difficult to accurately determine its color.
-         */
-        Color detectedColor = colorSensor.getColor();
-
-        String colorString;
-        ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
-
-        if (match.color == kPurple) {
-            colorString = "Purple";
-        } else if (match.color == kYellow){
-            colorString = "Yellow";
-        } else if (match.color == kMiddle){
-            colorString = "Nothing";
+        if (getColorSensor().getColor().equals("Purple")) {
+            getLEDs().purpleCube(true);
+        } else if (getColorSensor().getColor().equals("Purple")) {
+            getLEDs().yellowCone(true);
         } else {
-            colorString = "idle";
+            getLEDs().ledOff(true);
         }
-
-        /**
-         * The sensor returns a raw IR value of the infrared light detected.
-         */
-        double IR = colorSensor.getIR();
-
-        /**
-         * Open Smart Dashboard or Shuffleboard to see the color detected by the
-         * sensor.
-         */
-        SmartDashboard.putString("Color", detectedColor.red + ", " + detectedColor.green + ", " + detectedColor.blue);
-        SmartDashboard.putString("Color Detected", colorString);
-//        SmartDashboard.putNumber("Green", detectedColor.green);
-//        SmartDashboard.putNumber("Blue", detectedColor.blue);
-//        SmartDashboard.putNumber("IR", IR);
-
-        /**
-         * In addition to RGB IR values, the color sensor can also return an
-         * infrared proximity value. The chip contains an IR led which will emit
-         * IR pulses and measure the intensity of the return. When an object is
-         * close the value of the proximity will be large (max 2047 with default
-         * settings) and will approach zero when the object is far away.
-         *
-         * Proximity can be used to roughly approximate the distance of an object
-         * or provide a threshold for when an object is close enough to provide
-         * accurate color values.
-         */
-//        int proximity = colorSensor.getProximity();
-//
-//        SmartDashboard.putNumber("Proximity", proximity);
     }
 
     @Override
@@ -176,5 +116,12 @@ public class Robot extends TimedRobot {
             led = new LEDSystem();
         }
         return led;
+    }
+
+    public static ColorSensor getColorSensor() {
+        if (colorSensor == null) {
+            colorSensor = new ColorSensor();
+        }
+        return colorSensor;
     }
 }
