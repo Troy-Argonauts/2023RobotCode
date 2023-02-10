@@ -10,18 +10,27 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ColorSensor extends SubsystemBase {
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    private final ColorSensorV3 colorSensor;
 
-    public static Color kYellow = new Color(0.32, 0.52, 0.14);
-    public static Color kPurple = new Color(0.18, 0.31, 0.51);
-    public static Color kMiddle = new Color(0.3, 0.5, 0.24);
+    public static Color kYellow;
+    public static Color kPurple;
+    public static Color kMiddle;
 
-    public static ColorMatch colorMatch = new ColorMatch();
+    public static ColorMatch colorMatch;
 
-    Color detectedColor = colorSensor.getColor();
+    Color detectedColor;
 
-    ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
+    ColorMatchResult match;
+
+    public ColorSensor() {
+        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+
+        kYellow = new Color(0.32, 0.52, 0.14);
+        kPurple = new Color(0.18, 0.31, 0.51);
+        kMiddle = new Color(0.3, 0.5, 0.24);
+
+        colorMatch = new ColorMatch();
+    }
 
     public String getColor() {
         if (match.color == kPurple) {
@@ -37,6 +46,9 @@ public class ColorSensor extends SubsystemBase {
 
     @Override
     public void periodic() {
+        detectedColor = colorSensor.getColor();
+        match = colorMatch.matchClosestColor(detectedColor);
+
         SmartDashboard.putString("Color", detectedColor.red + ", " + detectedColor.green + ", " + detectedColor.blue);
         SmartDashboard.putString("Color Detected", getColor());
     }

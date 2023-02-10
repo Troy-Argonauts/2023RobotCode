@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
 
         if (getColorSensor().getColor().equals("Purple")) {
             getLEDs().purpleCube(true);
-        } else if (getColorSensor().getColor().equals("Purple")) {
+        } else if (getColorSensor().getColor().equals("Yellow")) {
             getLEDs().yellowCone(true);
         } else {
             getLEDs().ledOff(true);
