@@ -33,12 +33,8 @@ public class RobotContainer {
                 }, Robot.getGearbox())
         );
 
-        Robot.getLEDs().setDefaultCommand(
-                new InstantCommand(() -> {
-                    Robot.getLEDs().yellowCone(true);
-                }, Robot.getLEDs())
-        );
-
+        driver.getAButton().toggleOnTrue(new InstantCommand(() -> Robot.getLEDs().purpleCube(true), Robot.getLEDs()));
+        driver.getBButton().toggleOnTrue(new InstantCommand(() -> Robot.getLEDs().yellowCone(true), Robot.getLEDs()));
     }
     
     
