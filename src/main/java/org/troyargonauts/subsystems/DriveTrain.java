@@ -1,10 +1,12 @@
 package org.troyargonauts.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,41 +20,27 @@ public class DriveTrain extends SubsystemBase {
 
     private CANSparkMax frontRight, middleRight, backRight, frontLeft, middleLeft, backLeft;
 
-    Pigeon2 pigeon;
-
-    PIDController drivePID, turnPID;
-
     /**
      * Creates a new drivetrain object for the code and states the motors needed for the drivetrain
      */
 
     public DriveTrain() {
-        frontRight = new CANSparkMax(DriveConstants.kFrontRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        middleRight = new CANSparkMax(DriveConstants.kMiddleRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        backRight = new CANSparkMax(DriveConstants.kBackRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        middleLeft = new CANSparkMax(DriveConstants.kMiddleLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        backLeft = new CANSparkMax(DriveConstants.kBackLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-
-        frontLeft.setInverted(true);
-        middleLeft.setInverted(true);
-        backLeft.setInverted(true);
-
-        backRight.follow(frontRight);
-        middleRight.follow(frontRight);
-
-        backLeft.follow(frontLeft);
-        middleLeft.follow(frontLeft);
-
-        pigeon = new Pigeon2(DriveConstants.kPigeonID);
-
-        drivePID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-        turnPID = new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD);
-
-        drivePID.setTolerance(DriveConstants.kDriveTolerance);
-        turnPID.setTolerance(DriveConstants.kTurnToleranceDeg);
-
-        turnPID.enableContinuousInput(-180, 180);
+//        frontRight = new CANSparkMax(DriveConstants.kFrontRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        middleRight = new CANSparkMax(DriveConstants.kMiddleRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        backRight = new CANSparkMax(DriveConstants.kBackRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        middleLeft = new CANSparkMax(DriveConstants.kMiddleLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        backLeft = new CANSparkMax(DriveConstants.kBackLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+//
+//        frontLeft.setInverted(true);
+//        middleLeft.setInverted(true);
+//        backLeft.setInverted(true);
+//
+//        backRight.follow(frontRight);
+//        middleRight.follow(frontRight);
+//
+//        backLeft.follow(frontLeft);
+//        middleLeft.follow(frontLeft);
     }
 
     
@@ -104,66 +92,15 @@ public class DriveTrain extends SubsystemBase {
         backLeft.getEncoder().setPosition(0);
     }
 
-    /**
-     * Resets the angle
-     * @return the angle to 0
-     */
-    
-    public void resetAngle() {
-        pigeon.setYaw(0);
+    public void testDrive(double left, double right) {
+        DriverStation.reportWarning("Entered Test Drive", true);
+        frontRight.set(right);
+        frontLeft.set(left);
+        DriverStation.reportWarning("Set Motor Powers", true);
     }
 
-    
-    /** 
-     * Returns angles between -180 and 180 degrees from pigeon
-     * @return angle of robot
-     */
-    public double getAngle() {
-        double output = pigeon.getYaw() % 360;
-        while (Math.abs(output) > 180) {
-            if (output < 0) {
-                output += 360;
-            } else {
-                output -= 360;
-            }
-        }
-        return output;
-    }
-
-    
-    /** 
-     * Drives certian distance based parameter
-     * @param setpoint distance away we want robot to be
-     * @return PIDCommand that moved robot to setpoint
-     */
-    public PIDCommand drivePID(double setpoint) {
-        return new PIDCommand(
-            drivePID,
-            () -> getPosition(),
-            setpoint * DriveConstants.kDistanceConvertion,
-            output -> cheesyDrive(output, 0, false, 1),
-            Robot.getDrivetrain()
-        );
-    }
-
-    
-    /** 
-     * Turns certain angle based on PID
-     * @param angle the angle we want the robot to be at
-     * @return PIDCommand that turns robot to target angle
-     */
-    public PIDCommand turnPID(double angle) {
-        return new PIDCommand(
-            turnPID,
-            () -> getAngle(),
-            angle,
-            output -> cheesyDrive(0, output, false, 1),
-            Robot.getDrivetrain()
-        );
-    }
-
-    public void breakMode() {
-        resetEncoders();
-        drivePID(0);
+    public void testAuton() {
+        frontLeft.set(0.3);
+        frontRight.set(0.3);
     }
 }

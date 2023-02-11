@@ -23,12 +23,13 @@ public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
 
-    static DriveTrain driveTrain = new DriveTrain();
+    static DriveTrain driveTrain;
 
     @Override
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
+        driveTrain = new DriveTrain();
         robotContainer = new RobotContainer();
     }
 

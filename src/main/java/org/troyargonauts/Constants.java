@@ -3,12 +3,12 @@ package org.troyargonauts;
 public final class Constants {
 
     public interface DriveConstants {
-        final int kFrontRightID = 4;
-        final int kMiddleRightID = 5;
-        final int kBackRightID = 6;
-        final int kFrontLeftID = 1;
-        final int kMiddleLeftID = 2;
-        final int kBackLeftID = 3;
+        final int kFrontRightID = 5;
+        final int kMiddleRightID = 6;
+        final int kBackRightID = 7;
+        final int kFrontLeftID = 2;
+        final int kMiddleLeftID = 3;
+        final int kBackLeftID = 4;
 
         final int kPigeonID = 6;
 

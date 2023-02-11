@@ -5,6 +5,8 @@
 
 package org.troyargonauts;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -16,21 +18,30 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
 
-    public ArgoController argoController;
+    public ArgoController argoController = new ArgoController(0,0);
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
-        argoController = new ArgoController(0, 0);
     }
     
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
+        CANSparkMax right1 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+        CANSparkMax right2 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+        CANSparkMax right3 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+        CANSparkMax left1 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
+        CANSparkMax left2 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+        CANSparkMax left3 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
+        right2.follow(right1);
+        right3.follow(right1);
+        left2.follow(left1);
+        left3.follow(left1);
         Robot.getDrivetrain().setDefaultCommand(
-            new RunCommand(
-                () -> {
-                   Robot.getDrivetrain().tankDrive(argoController.getLeftJoystickY(), argoController.getRightJoystickY(), true, 0.4);
-                }
+            new RunCommand(() -> {
+                right1.set((argoController.getLeftJoystickY() - argoController.getRightJoystickX()) * 0.25);
+                left1.set((argoController.getLeftJoystickY() + argoController.getRightJoystickX()) * 0.25);
+            }, Robot.getDrivetrain()
             )
         );
     }

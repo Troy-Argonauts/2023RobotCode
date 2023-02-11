@@ -1,5 +1,6 @@
 package org.troyargonauts;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -12,9 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class ArgoController extends Joystick {
 
-    private final int controllerDrift;
+    private final double controllerDrift;
 
-    public ArgoController(int port, int controllerDrift) {
+    public ArgoController(int port, double controllerDrift) {
         super(port);
         this.controllerDrift = controllerDrift;
     }
@@ -79,8 +80,10 @@ public class ArgoController extends Joystick {
 
     public double getRightJoystickX() {
         if (Math.abs(getRawAxis(4)) < controllerDrift) {
+            DriverStation.reportWarning("No input", true);
             return 0;
         }
+        DriverStation.reportWarning("Input", true);
         return getRawAxis(4);
 
     }
