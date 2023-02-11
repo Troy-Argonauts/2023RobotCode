@@ -31,7 +31,9 @@ public class LEDSystem extends SubsystemBase {
     private final CANdle candle;
     public CANdleConfiguration config;
 
-
+    /**
+     * This configures the CANdle
+     */
     public LEDSystem() {
         candle = new CANdle(5);
         config = new CANdleConfiguration();
@@ -39,14 +41,23 @@ public class LEDSystem extends SubsystemBase {
         candle.configAllSettings(config);
     }
 
-    public void ledTestOn(boolean True) {
-        if(True) {
+    /**
+     * This is to test the LEDs and sets them to white.
+     * @param enable enable determines if the LEDs are enabled or disabled
+     */
+    public void ledTestOn(boolean enable) {
+        if(enable) {
             candle.setLEDs(255, 255, 255);
         }
     }
 
-    public void ledStandby(int ledLength, boolean True) {
-        if(True) {
+    /**
+     * This method turns the LEDs to a rainbow color pattern. We will generally use this during standby.
+     * @param ledLength refers to the number of LEDs on the strip that will be turned on
+     * @param enable determines if the LEDs are rainbow or not
+     */
+    public void ledStandby(int ledLength, boolean enable) {
+        if(enable) {
             // dim the LEDs to half brightness
             config.brightnessScalar = 0.5;
             candle.configAllSettings(config);
@@ -55,6 +66,10 @@ public class LEDSystem extends SubsystemBase {
         }
     }
 
+    /**
+     * This method displays the Argonauts' gold color. We plan to use it if we win.
+     * @param win determines if argo colors are on or off
+     */
     // We could maybe set it up so that if we win, these are the lights that will display
     public void argoColors(boolean win) {
         if(win) {
@@ -63,27 +78,43 @@ public class LEDSystem extends SubsystemBase {
     }
     // Switches color from "Black" (dark gray) to gold
 
+    /**
+     * This method will turn the LEDs purple if we need a purple cube
+     * @param purpleCube determines if the LEDs are purple or not
+     */
     public void purpleCube(boolean purpleCube) {
         if(purpleCube) {
             candle.setLEDs(purpleR, purpleG, purpleB);
         }
     }
 
+    /**
+     * This method will turn the LEDs yellow if we need a yellow cone
+     * @param yellowCone determines if the LEDs are yellow or not
+     */
     public void yellowCone(boolean yellowCone) {
         if(yellowCone) {
             candle.setLEDs(yellowR, yellowG, yellowB);
         }
     }
 
+    /**
+     * This method turns the LEDs off
+     * @param off turns the LEDs off
+     */
     public void ledOff(boolean off) {
         if(off) {
             candle.setLEDs(0, 0, 0);
         }
     }
 
+    /**
+     * This method makes the LEDs red. We plan to use this when we lose
+     * @param lose determines if the LEDs are red or not
+     */
     public void losingState(boolean lose) {
         if(lose) {
-            candle.setLEDs(255, 17, 4);
+            candle.setLEDs(255, 0, 0);
         }
     }
 }
