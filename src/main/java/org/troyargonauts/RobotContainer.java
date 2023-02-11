@@ -27,22 +27,8 @@ public class RobotContainer {
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
-        CANSparkMax right1 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-        CANSparkMax right2 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-        CANSparkMax right3 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-        CANSparkMax left1 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
-        CANSparkMax left2 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
-        CANSparkMax left3 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
-        right2.follow(right1);
-        right3.follow(right1);
-        left2.follow(left1);
-        left3.follow(left1);
         Robot.getDrivetrain().setDefaultCommand(
-            new RunCommand(() -> {
-                right1.set((argoController.getLeftJoystickY() - argoController.getRightJoystickX()) * 0.25);
-                left1.set((argoController.getLeftJoystickY() + argoController.getRightJoystickX()) * 0.25);
-            }, Robot.getDrivetrain()
-            )
+                new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(argoController.getLeftJoystickY(), argoController.getRightJoystickX(), false, 0.25), Robot.getDrivetrain())
         );
     }
     

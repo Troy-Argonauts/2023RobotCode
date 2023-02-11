@@ -3,32 +3,32 @@ package org.troyargonauts;
 public final class Constants {
 
     public interface DriveConstants {
-        final int kFrontRightID = 5;
-        final int kMiddleRightID = 6;
-        final int kBackRightID = 7;
-        final int kFrontLeftID = 2;
-        final int kMiddleLeftID = 3;
-        final int kBackLeftID = 4;
+        int kFrontRightID = 2;
+        int kMiddleRightID = 3;
+        int kBackRightID = 4;
+        int kFrontLeftID = 5;
+        int kMiddleLeftID = 6;
+        int kBackLeftID = 7;
 
-        final int kPigeonID = 6;
+        int kPigeonID = 6;
 
-        final double kWheelDiameterInches = 6.0;
-        final double kEncoderNUPerWheelRevolution = 2004.789;
-        final double kWheelRevolutionDistanceInches = kWheelDiameterInches * Math.PI;
-        final double kDistanceConvertion = kEncoderNUPerWheelRevolution / kWheelRevolutionDistanceInches;
+        double kWheelDiameterInches = 6.0;
+        double kEncoderNUPerWheelRevolution = 2004.789;
+        double kWheelRevolutionDistanceInches = kWheelDiameterInches * Math.PI;
+        double kDistanceConvertion = kEncoderNUPerWheelRevolution / kWheelRevolutionDistanceInches;
 
-        final double kEncoderGearboxScale = 8.56;
+        double kEncoderGearboxScale = 8.56;
 
-        final double kP = 1;
-        final double kI = 0;
-        final double kD = 0;
+        double kP = 1;
+        double kI = 0;
+        double kD = 0;
         
-        final double kTurnP = 1;
-        final double kTurnI = 0;
-        final double kTurnD = 0;
+        double kTurnP = 1;
+        double kTurnI = 0;
+        double kTurnD = 0;
 
-        final double kDriveTolerance = 1;
-        final double kTurnToleranceDeg = 1;
+        double kDriveTolerance = 1;
+        double kTurnToleranceDeg = 1;
     }
 
 }

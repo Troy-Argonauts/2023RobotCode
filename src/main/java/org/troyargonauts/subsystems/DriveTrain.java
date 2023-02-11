@@ -25,22 +25,26 @@ public class DriveTrain extends SubsystemBase {
      */
 
     public DriveTrain() {
-//        frontRight = new CANSparkMax(DriveConstants.kFrontRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        middleRight = new CANSparkMax(DriveConstants.kMiddleRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        backRight = new CANSparkMax(DriveConstants.kBackRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        middleLeft = new CANSparkMax(DriveConstants.kMiddleLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        backLeft = new CANSparkMax(DriveConstants.kBackLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-//
-//        frontLeft.setInverted(true);
-//        middleLeft.setInverted(true);
-//        backLeft.setInverted(true);
-//
-//        backRight.follow(frontRight);
-//        middleRight.follow(frontRight);
-//
-//        backLeft.follow(frontLeft);
-//        middleLeft.follow(frontLeft);
+        frontRight = new CANSparkMax(DriveConstants.kFrontRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        middleRight = new CANSparkMax(DriveConstants.kMiddleRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        backRight = new CANSparkMax(DriveConstants.kBackRightID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        frontLeft = new CANSparkMax(DriveConstants.kFrontLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        middleLeft = new CANSparkMax(DriveConstants.kMiddleLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        backLeft = new CANSparkMax(DriveConstants.kBackLeftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        frontLeft.setInverted(false);
+        middleLeft.setInverted(false);
+        backLeft.setInverted(false);
+        
+        frontRight.setInverted(true);
+        middleRight.setInverted(true);
+        backRight.setInverted(true);
+
+        backRight.follow(frontRight);
+        middleRight.follow(frontRight);
+
+        backLeft.follow(frontLeft);
+        middleLeft.follow(frontLeft);
     }
 
     
@@ -51,11 +55,11 @@ public class DriveTrain extends SubsystemBase {
      */
     public void cheesyDrive(double speed, double turn, boolean square, double nerf) {
         if (square) {
-            frontRight.set((speed + turn) * (speed + turn));
-            frontLeft.set((speed - turn) * (speed - turn));
+            frontRight.set((speed - turn) * (speed + turn));
+            frontLeft.set((speed + turn) * (speed - turn));
         } else {
-            frontRight.set((speed + turn) * nerf);
-            frontLeft.set((speed - turn) * nerf);
+            frontRight.set((speed - turn) * nerf);
+            frontLeft.set((speed + turn) * nerf);
         }
     }
 

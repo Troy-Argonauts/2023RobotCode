@@ -80,10 +80,8 @@ public class ArgoController extends Joystick {
 
     public double getRightJoystickX() {
         if (Math.abs(getRawAxis(4)) < controllerDrift) {
-            DriverStation.reportWarning("No input", true);
             return 0;
         }
-        DriverStation.reportWarning("Input", true);
         return getRawAxis(4);
 
     }
