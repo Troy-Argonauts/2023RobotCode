@@ -55,8 +55,10 @@ public class DriveTrain extends SubsystemBase {
      */
     public void cheesyDrive(double speed, double turn, boolean square, double nerf) {
         if (square) {
-            frontRight.set((speed - turn) * (speed + turn));
-            frontLeft.set((speed + turn) * (speed - turn));
+            speed *= Math.abs(speed);
+            turn *= Math.abs(turn);
+            frontRight.set((speed - turn) * 0.8);
+            frontLeft.set((speed + turn) * 0.8);
         } else {
             frontRight.set((speed - turn) * nerf);
             frontLeft.set((speed + turn) * nerf);
@@ -65,11 +67,13 @@ public class DriveTrain extends SubsystemBase {
 
     public void tankDrive(double left, double right, boolean square, double nerf) {
         if (square) {
-            frontRight.set(-right * right);
-            frontLeft.set(-left * left);
+            left *= Math.abs(left);
+            right *= Math.abs(right);
+            frontRight.set(right * 0.8);
+            frontLeft.set(left * 0.8);
         } else {
-            frontRight.set(-right * nerf);
-            frontLeft.set(-left * nerf);
+            frontRight.set(right * nerf);
+            frontLeft.set(left * nerf);
         }
     }
 

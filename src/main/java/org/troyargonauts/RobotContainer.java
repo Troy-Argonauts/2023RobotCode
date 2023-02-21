@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class RobotContainer {
 
     public ArgoController argoController = new ArgoController(0,0);
+
+    public boolean cheesy = true;
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
@@ -27,9 +29,15 @@ public class RobotContainer {
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
-        Robot.getDrivetrain().setDefaultCommand(
-                new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(argoController.getLeftJoystickY(), argoController.getRightJoystickX(), false, 0.25), Robot.getDrivetrain())
-        );
+        if (cheesy) {
+            Robot.getDrivetrain().setDefaultCommand(
+                    new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(argoController.getLeftJoystickY(), argoController.getRightJoystickX(), true, 0.25), Robot.getDrivetrain())
+            );
+        } else {
+            Robot.getDrivetrain().setDefaultCommand(
+                    new RunCommand(() -> Robot.getDrivetrain().tankDrive(argoController.getRightJoystickY(), argoController.getLeftJoystickY(), true, 0.25), Robot.getDrivetrain())
+            );
+        }
     }
     
     
