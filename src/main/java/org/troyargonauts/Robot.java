@@ -5,6 +5,7 @@
 
 package org.troyargonauts;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,6 +44,8 @@ public class Robot extends TimedRobot {
         pneumatics = new Pneumatics();
         robotContainer = new RobotContainer();
 
+        DataLogManager.start();
+
         // autonomous chooser on the dashboard.
         SmartDashboard.putData("Autonomous modes", chooser);
         chooser.setDefaultOption("Wrist PID", Robot.getArm().wristPid(0));
@@ -65,10 +68,9 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void robotPeriodic()
-    {
-        SmartDashboard.putNumber("Left Y", RobotContainer.getDriver().getLeftJoystickY());
-        SmartDashboard.putNumber("Right X", RobotContainer.getDriver().getRightJoystickX());
+    public void robotPeriodic() {
+        SmartDashboard.putNumber("Left Y", RobotContainer.getDriver().getLeftY());
+        SmartDashboard.putNumber("Right X", RobotContainer.getDriver().getRightX());
         CommandScheduler.getInstance().run();
     }
 

@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.troyargonauts.Constants;
 import org.troyargonauts.Robot;
-import org.troyargonauts.common.control.motorcontrol.LazySparkMax;
+import org.troyargonauts.common.util.motorcontrol.LazyCANSparkMax;
 
 /**
  * Class representing arm. Includes PID control and absolute encoders
  * @author TeoElRey, ASH-will-WIN, SolidityContract
  */
 public class Arm extends SubsystemBase {
-    private final LazySparkMax armMotor, manipulatorMotor, wristMotor;
+    private final LazyCANSparkMax armMotor, manipulatorMotor, wristMotor;
 //    private final AbsoluteEncoder elbowEncoder;
 //    private final AbsoluteEncoder wristEncoder;
     private final PIDController wristPID, armPID;
@@ -27,9 +27,9 @@ public class Arm extends SubsystemBase {
      * Here, the motors, absolute encoders, and PID Controller are instantiated.
      */
     public Arm() {
-        armMotor = new LazySparkMax(Constants.Arm.ELBOW, CANSparkMaxLowLevel.MotorType.kBrushless);
-        manipulatorMotor = new LazySparkMax(Constants.Arm.MANIPULATOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-        wristMotor = new LazySparkMax(Constants.Arm.WRIST, CANSparkMaxLowLevel.MotorType.kBrushless);
+        armMotor = new LazyCANSparkMax(Constants.Arm.ELBOW, CANSparkMaxLowLevel.MotorType.kBrushless);
+        manipulatorMotor = new LazyCANSparkMax(Constants.Arm.MANIPULATOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        wristMotor = new LazyCANSparkMax(Constants.Arm.WRIST, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         armMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         manipulatorMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
