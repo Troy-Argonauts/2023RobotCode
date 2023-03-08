@@ -20,7 +20,6 @@ import org.troyargonauts.robot.Robot;
 public class DriveTrain extends SubsystemBase {
 
     private final LazyCANSparkMax frontRight, middleRight, backRight, frontLeft, middleLeft, backLeft;
-
     private final DifferentialDrive drivetrain;
     private final LazyCANSparkMax[] leftMotors, rightMotors;
 
@@ -52,7 +51,6 @@ public class DriveTrain extends SubsystemBase {
         };
 
         drivetrain = new DifferentialDrive(new MotorControllerGroup(leftMotors), new MotorControllerGroup(rightMotors));
-
 
         frontLeft.setInverted(false);
         middleLeft.setInverted(false);
