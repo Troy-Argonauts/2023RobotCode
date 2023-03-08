@@ -1,4 +1,4 @@
-package org.troyargonauts.constants;
+package org.troyargonauts.robot.constants;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
