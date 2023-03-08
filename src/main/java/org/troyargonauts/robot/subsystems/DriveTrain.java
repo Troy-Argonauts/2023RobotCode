@@ -3,6 +3,8 @@ package org.troyargonauts.robot.subsystems;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +21,9 @@ public class DriveTrain extends SubsystemBase {
 
     private final LazyCANSparkMax frontRight, middleRight, backRight, frontLeft, middleLeft, backLeft;
 
+    private final DifferentialDrive drivetrain;
+    private final LazyCANSparkMax[] leftMotors, rightMotors;
+
     private Pigeon2 pigeon;
 
     private final PIDController drivePID, turnPID, autoBalancePID;
@@ -32,13 +37,22 @@ public class DriveTrain extends SubsystemBase {
      * Motor controllers on the right side are reversed and set to follow other motor controllers.
      */
 
+    @SuppressWarnings("resource")
     public DriveTrain() {
-        frontRight = new LazyCANSparkMax(Constants.DriveTrain.FRONT_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        middleRight = new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        backRight = new LazyCANSparkMax(Constants.DriveTrain.BACK_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        frontLeft = new LazyCANSparkMax(Constants.DriveTrain.FRONT_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        middleLeft = new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        backLeft = new LazyCANSparkMax(Constants.DriveTrain.BACK_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftMotors = new LazyCANSparkMax[] {
+                new LazyCANSparkMax(Constants.DriveTrain.FRONT_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless),
+                new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless),
+                new LazyCANSparkMax(Constants.DriveTrain.BACK_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless)
+        };
+
+        rightMotors = new LazyCANSparkMax[] {
+                new LazyCANSparkMax(Constants.DriveTrain.FRONT_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless),
+                new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless),
+                new LazyCANSparkMax(Constants.DriveTrain.BACK_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless)
+        };
+
+        drivetrain = new DifferentialDrive(new MotorControllerGroup(leftMotors), new MotorControllerGroup(rightMotors));
+
 
         frontLeft.setInverted(false);
         middleLeft.setInverted(false);
@@ -225,6 +239,10 @@ public class DriveTrain extends SubsystemBase {
     public void brakeMode() {
         resetEncoders();
         drivePID(0);
+    }
+
+    public void setMotorConfig() {
+
     }
 
 

@@ -5,6 +5,11 @@
 
 package org.troyargonauts.robot;
 
+import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.hal.simulation.DriverStationDataJNI;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -25,7 +30,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         // Configure the trigger bindings
-
+        DriverStation.silenceJoystickConnectionWarning(true);
         configureBindings();
     }
 
