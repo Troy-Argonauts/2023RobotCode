@@ -1,16 +1,21 @@
 package org.troyargonauts.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.troyargonauts.common.math.Angle;
 import org.troyargonauts.common.util.motorcontrol.LazyCANSparkMax;
 import org.troyargonauts.robot.Constants;
 import org.troyargonauts.robot.Robot;
+import org.troyargonauts.robot.constants.Motors;
 
 /**
  * Drivetrain allows control of the robot's drivetrain in cheesy drive and tank drive. 
@@ -18,17 +23,16 @@ import org.troyargonauts.robot.Robot;
  * @author @SolidityContract @sgowda260 @Shreyan-M
  */
 public class DriveTrain extends SubsystemBase {
-
-    private final LazyCANSparkMax frontRight, middleRight, backRight, frontLeft, middleLeft, backLeft;
     private final DifferentialDrive drivetrain;
+    private final DifferentialDriveOdometry odometry;
     private final LazyCANSparkMax[] leftMotors, rightMotors;
+    private final LazyCANSparkMax masterRightMotor, masterLeftMotor, middleRightMotor, backRightMotor, middleLeftMotor, backLeftMotor;
 
     private Pigeon2 pigeon;
 
     private final PIDController drivePID, turnPID, autoBalancePID;
 
     public double frontRightEncoderValue, middleRightEncoderValue, backRightEncoderValue, frontLeftEncoderValue, middleLeftEncoderValue, backLeftEncoderValue;
-
     public double gyroValue;
 
     /**
@@ -38,42 +42,40 @@ public class DriveTrain extends SubsystemBase {
 
     @SuppressWarnings("resource")
     public DriveTrain() {
-        leftMotors = new LazyCANSparkMax[] {
-                new LazyCANSparkMax(Constants.DriveTrain.FRONT_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless),
-                new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless),
-                new LazyCANSparkMax(Constants.DriveTrain.BACK_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless)
-        };
+        masterLeftMotor = new LazyCANSparkMax(Constants.DriveTrain.FRONT_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        middleLeftMotor = new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        backLeftMotor = new LazyCANSparkMax(Constants.DriveTrain.BACK_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        masterRightMotor = new LazyCANSparkMax(Constants.DriveTrain.FRONT_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        middleRightMotor = new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        backRightMotor = new LazyCANSparkMax(Constants.DriveTrain.BACK_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         rightMotors = new LazyCANSparkMax[] {
-                new LazyCANSparkMax(Constants.DriveTrain.FRONT_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless),
-                new LazyCANSparkMax(Constants.DriveTrain.MIDDLE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless),
-                new LazyCANSparkMax(Constants.DriveTrain.BACK_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless)
+                masterRightMotor,
+                middleRightMotor,
+                backRightMotor
         };
+
+        leftMotors = new LazyCANSparkMax[] {
+                masterLeftMotor,
+                middleLeftMotor,
+                backLeftMotor
+        };
+
+        restoreFactoryDefaults();
+
+        middleLeftMotor.follow(masterLeftMotor);
+        backLeftMotor.follow(masterLeftMotor);
+        middleRightMotor.follow(masterRightMotor);
+        backRightMotor.follow(masterRightMotor);
 
         drivetrain = new DifferentialDrive(new MotorControllerGroup(leftMotors), new MotorControllerGroup(rightMotors));
 
-        frontLeft.setInverted(false);
-        middleLeft.setInverted(false);
-        backLeft.setInverted(false);
-
-        frontRight.setInverted(true);
-        middleRight.setInverted(true);
-        backRight.setInverted(true);
-
-        backRight.follow(frontRight);
-        middleRight.follow(frontRight);
-
-        backLeft.follow(frontLeft);
-        middleLeft.follow(frontLeft);
-
-//        frontRight.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
-//        middleRight.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
-//        backRight.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
-//        frontLeft.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
-//        middleLeft.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
-//        backLeft.getEncoder().setPositionConversionFactor(Constants.DriveTrain.REVOLUTION_DISTANCE / 42);
+        setMotorConfig(Motors.Drivetrain.LEFT, Motors.Drivetrain.RIGHT);
 
         pigeon = new Pigeon2(Constants.DriveTrain.PIGEON);
+
+        odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
 
         drivePID = new PIDController(Constants.DriveTrain.kDriveP, Constants.DriveTrain.kDriveI, Constants.DriveTrain.kDriveD);
         turnPID = new PIDController(Constants.DriveTrain.kTurnP, Constants.DriveTrain.kTurnI, Constants.DriveTrain.kTurnD);
@@ -86,16 +88,17 @@ public class DriveTrain extends SubsystemBase {
         turnPID.enableContinuousInput(-180, 180);
 
         resetEncoders();
+        burnFlash();
     }
 
     @Override
     public void periodic() {
-        frontRightEncoderValue = frontRight.getEncoder().getPosition();
-        middleRightEncoderValue = middleRight.getEncoder().getPosition();
-        backRightEncoderValue = backRight.getEncoder().getPosition();
-        frontLeftEncoderValue = frontLeft.getEncoder().getPosition();
-        middleLeftEncoderValue = middleLeft.getEncoder().getPosition();
-        backLeftEncoderValue = backLeft.getEncoder().getPosition();
+        frontRightEncoderValue = masterRightMotor.getEncoder().getPosition();
+        middleRightEncoderValue = middleRightMotor.getEncoder().getPosition();
+        backRightEncoderValue = backRightMotor.getEncoder().getPosition();
+        frontLeftEncoderValue = masterLeftMotor.getEncoder().getPosition();
+        middleLeftEncoderValue = middleLeftMotor.getEncoder().getPosition();
+        backLeftEncoderValue = backLeftMotor.getEncoder().getPosition();
 
         SmartDashboard.putNumber("frontRightEncoderValue", frontRightEncoderValue);
         SmartDashboard.putNumber("middleRightEncoderValue", middleRightEncoderValue);
@@ -118,8 +121,8 @@ public class DriveTrain extends SubsystemBase {
      * @param nerf decreases the max speed and amount we want to turn the robot.
      */
     public void cheesyDrive(double speed, double turn, double nerf) {
-        frontRight.set(((speed - turn) + Constants.DriveTrain.RIGHT_CORRECTION) * nerf);
-        frontLeft.set((speed + turn) * nerf);
+        masterRightMotor.set(((speed - turn) + Constants.DriveTrain.RIGHT_CORRECTION) * nerf);
+        masterLeftMotor.set((speed + turn) * nerf);
     }
 
     /** 
@@ -131,8 +134,8 @@ public class DriveTrain extends SubsystemBase {
      * @param nerf decreases the max speed and amount we want to turn the robot.
      */
     public void tankDrive(double left, double right, double nerf) {
-        frontRight.set((right + Constants.DriveTrain.RIGHT_CORRECTION) * nerf);
-        frontLeft.set(left * nerf);
+        masterRightMotor.set((right + Constants.DriveTrain.RIGHT_CORRECTION) * nerf);
+        masterLeftMotor.set(left * nerf);
     }
 
     
@@ -165,12 +168,13 @@ public class DriveTrain extends SubsystemBase {
      */
 
     public void resetEncoders() {
-        frontRight.getEncoder().setPosition(0);
-        middleRight.getEncoder().setPosition(0);
-        backRight.getEncoder().setPosition(0);
-        frontLeft.getEncoder().setPosition(0);
-        middleLeft.getEncoder().setPosition(0);
-        backLeft.getEncoder().setPosition(0);
+        for (CANSparkMax motor : leftMotors) {
+            motor.getEncoder().setPosition(0);
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.getEncoder().setPosition(0);
+        }
     }
 
     /**
@@ -179,16 +183,12 @@ public class DriveTrain extends SubsystemBase {
     public void resetAngle() {
         pigeon.setYaw(0);
     }
-
-
-
-
     
     /** 
      * Returns angles between -180 and 180 degrees from pigeon
      * @return angle of robot
      */
-    public double getAngle() {
+    public double getRawGyroAngle() {
         double output = gyroValue % 360;
         while (Math.abs(output) > 180) {
             if (output < 0) {
@@ -200,6 +200,14 @@ public class DriveTrain extends SubsystemBase {
         return output;
     }
 
+    public Angle getAngle() {
+        return Angle.fromDegrees(getRawGyroAngle());
+    }
+
+    public Rotation2d getRotation2d() {
+        return getAngle().getRotation2d();
+    }
+
     /** 
      * Uses PIDController to turn the robot a certain angle based on the pigeons yaw
      * @param angle the angle we want the robot to be at
@@ -208,7 +216,7 @@ public class DriveTrain extends SubsystemBase {
     public PIDCommand turnPID(double angle) {
         return new PIDCommand(
             turnPID,
-            () -> getAngle(),
+            () -> getRawGyroAngle(),
             angle,
             output -> cheesyDrive(0, output, 1),
             Robot.getDrivetrain()
@@ -239,8 +247,34 @@ public class DriveTrain extends SubsystemBase {
         drivePID(0);
     }
 
-    public void setMotorConfig() {
+    private void setMotorConfig(Motors.Config left, Motors.Config right) {
+        for (CANSparkMax motor : leftMotors) {
+            left.configure(motor);
+        }
 
+        for (CANSparkMax motor : rightMotors) {
+            right.configure(motor);
+        }
+    }
+
+    private void restoreFactoryDefaults() {
+        for (CANSparkMax motor : leftMotors) {
+            motor.restoreFactoryDefaults();
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.restoreFactoryDefaults();
+        }
+    }
+
+    private void burnFlash() {
+        for (CANSparkMax motor : leftMotors) {
+            motor.burnFlash();
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.burnFlash();
+        }
     }
 
 

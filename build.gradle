@@ -49,8 +49,17 @@ wpi.java.debugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+repositories {
+    maven {
+        url "https://maven.dacubeking.com/releases/"
+    }
+}
+
 
 dependencies {
+    implementation "com.dacubeking:autobuilder-robot:2.2.4"
+//    implementation files("autobuilder-robot-2.2.4.jar")
+
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 

@@ -5,6 +5,7 @@
 
 package org.troyargonauts.robot;
 
+import com.dacubeking.AutoBuilder.robot.robotinterface.AutonomousContainer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,16 +54,6 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("Drive Straight", new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(0.2, 0, 1), Robot.getDrivetrain()).withTimeout(2.5));
         chooser.addOption("Drive Hybrid Score", new DriveHybrid());
         chooser.addOption("Nothing", null);
-//        chooser.addOption("Turn PID", getDrivetrain().turnPID(90));
-
-
-//        pigeon.configFactoryDefault();
-//        pigeon.clearStickyFaults();
-//        final Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
-//        pigeonConfig.MountPosePitch = 0;
-//        pigeonConfig.MountPoseRoll = 0;
-//        pigeonConfig.MountPoseYaw = 0;
-//        pigeon.configAllSettings(pigeonConfig);
     }
 
     @Override
