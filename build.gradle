@@ -2,7 +2,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2023.2.1"
+    id "edu.wpi.first.GradleRIO" version "2023.3.1"
     id "idea"
 }
 
@@ -10,7 +10,7 @@ def javaVersion = JavaVersion.VERSION_11
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 
-def ROBOT_MAIN_CLASS = "org.troyargonauts.Main"
+def ROBOT_MAIN_CLASS = "org.troyargonauts.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
@@ -49,20 +49,8 @@ wpi.java.debugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
-repositories {
-    mavenCentral()
-    maven {
-        name = "GitHubPackages"
-        url='https://maven.pkg.github.com/Troy-Argonauts/ocean'
-//        credentials {
-//            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-//            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-//        }
-    }
-}
 
 dependencies {
-    //implementation 'org.troyargonauts:ocean:latest'
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
