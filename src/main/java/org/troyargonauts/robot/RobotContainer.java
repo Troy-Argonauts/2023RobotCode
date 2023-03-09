@@ -12,7 +12,7 @@ import org.troyargonauts.common.input.Gamepad;
 import org.troyargonauts.common.input.gamepads.AutoGamepad;
 import org.troyargonauts.common.math.OMath;
 import org.troyargonauts.common.streams.IStream;
-import org.troyargonauts.robot.subsystems.Arm;
+import org.troyargonauts.libs.ArgoController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,8 +22,8 @@ import org.troyargonauts.robot.subsystems.Arm;
  */
 public class RobotContainer {
 
-    public static final Gamepad driver = new AutoGamepad(0);
-    public static final Gamepad operator = new AutoGamepad(1);
+    public static final ArgoController driver = new ArgoController(0);
+    public static final ArgoController operator = new ArgoController(1);
 
     public RobotContainer() {
         // Configure the trigger bindings
@@ -34,69 +34,10 @@ public class RobotContainer {
      * Use this method to define your trigger->command mappings.
      */
     private void configureBindings() {
-        Robot.getDrivetrain().setDefaultCommand(
-                new RunCommand(
-                        () -> {
-                            double speed = IStream.create(driver::getLeftY)
-                                    .filtered(x -> OMath.deadband(x, Constants.DriveTrain.DEADBAND))
-                                    .get();
-                            double angle = IStream.create(driver::getRightX)
-                                    .filtered(x -> OMath.deadband(x, Constants.DriveTrain.DEADBAND))
-                                    .get();
-                            Robot.getDrivetrain().cheesyDrive(speed, angle, 1);
-                        }, Robot.getDrivetrain()
-                )
-        );
-
-        Robot.getArm().setDefaultCommand(
+        Robot.getIntakeNithin().setDefaultCommand(
                 new RunCommand(() -> {
-                    Robot.getArm().wristTeleOp(operator.getRightY());
-                    Robot.getArm().armTeleOp(operator.getLeftY());
-                }, Robot.getArm())
-        );
-
-        operator.getLeftBumper().onTrue(
-                        new InstantCommand(() -> Robot.getArm().setIntakeState(Arm.IntakeState.BACKWARD), Robot.getArm()))
-                .onFalse(new InstantCommand(() -> Robot.getArm().setIntakeState(Arm.IntakeState.OFF), Robot.getArm()));
-
-        operator.getRightBumper().onTrue(
-                        new InstantCommand(() -> Robot.getArm().setIntakeState(Arm.IntakeState.FORWARD), Robot.getArm()))
-                .onFalse(new InstantCommand(() -> Robot.getArm().setIntakeState(Arm.IntakeState.OFF), Robot.getArm()));
-
-        //Cone - Human Player (A Button)
-        operator.getBottomButton().toggleOnTrue(
-                new InstantCommand(() -> Robot.getArm().setArmSetpoint(5.5)).alongWith(
-                        new InstantCommand(() -> Robot.getArm().setWristSetpoint(-25))
-                )
-        );
-
-        //Cube - Human Player (B Button)
-        operator.getRightButton().toggleOnTrue(
-                new InstantCommand(() -> Robot.getArm().setArmSetpoint(13)).alongWith(
-                        new InstantCommand(() -> Robot.getArm().setWristSetpoint(-32))
-                )
-        );
-
-        //Home (X Button)
-        operator.getRightButton().toggleOnTrue(
-                new InstantCommand(() -> Robot.getArm().setArmSetpoint(-5)).alongWith(
-                        new InstantCommand(() -> Robot.getArm().setWristSetpoint(0))
-                )
-        );
-
-        //Cone Score (Y Button)
-        operator.getTopButton().toggleOnTrue(
-                new InstantCommand(() -> Robot.getArm().setArmSetpoint(39)).alongWith(
-                        new InstantCommand(() -> Robot.getArm().setWristSetpoint(-21))
-                )
-        );
-
-
-        //Floor Pickup
-        operator.getStartButton().toggleOnTrue(
-                new InstantCommand(() -> Robot.getArm().setArmSetpoint(75)).alongWith(
-                        new InstantCommand(() -> Robot.getArm().setWristSetpoint(-26))
-                )
+                    Robot.getIntakeNithin().setMotor(driver.getLeftJoystickY());
+                }, Robot.getIntakeNithin())
         );
     }
 
@@ -110,11 +51,11 @@ public class RobotContainer {
         return null;
     }
 
-    public static Gamepad getDriver() {
+    public static ArgoController getDriver() {
         return driver;
     }
 
-    public static Gamepad getOperator() {
+    public static ArgoController getOperator() {
         return operator;
     }
 }

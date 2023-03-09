@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import org.troyargonauts.robot.auton.DriveHybrid;
 import org.troyargonauts.robot.subsystems.*;
 
 /**
@@ -22,37 +21,22 @@ import org.troyargonauts.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
     private Command autonomousCommand;
+
+    private static Intake_Nithin intakeNithin;
     private static RobotContainer robotContainer;
-    private static DriveTrain driveTrain;
-    private static Arm arm;
-    private static Pneumatics pneumatics;
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
-
-
-    private static Elevator elevator;
-
-    private static Turret turret;
-//    static Pneumatics pneumatics;
 
     @Override
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-        arm = new Arm();
-        driveTrain = new DriveTrain();
-        elevator = new Elevator();
-        turret = new Turret();
-//        pneumatics = new Pneumatics();
+        intakeNithin = new Intake_Nithin();
         robotContainer = new RobotContainer();
 
         // autonomous chooser on the dashboard.
-        driveTrain.resetEncoders();
         SmartDashboard.putData("Autonomous modes", chooser);
-        chooser.addOption("Wrist PID", Robot.getArm().wristPid(0));
-        chooser.addOption("Arm PID", Robot.getArm().armPID(-30));
-        chooser.setDefaultOption("Drive Straight", new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(0.2, 0, 1), Robot.getDrivetrain()).withTimeout(2.5));
-        chooser.addOption("Drive Hybrid Score", new DriveHybrid());
         chooser.addOption("Nothing", null);
+        chooser.addOption("run", new RunCommand(() -> Robot.getIntakeNithin().setMotor(0.5), Robot.getIntakeNithin()));
 //        chooser.addOption("Turn PID", getDrivetrain().turnPID(90));
 
 
@@ -67,8 +51,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putNumber("Left Y", RobotContainer.getDriver().getLeftY());
-        SmartDashboard.putNumber("Right X", RobotContainer.getDriver().getRightX());
+        SmartDashboard.putNumber("Left Y", RobotContainer.getDriver().getLeftJoystickY());
+        SmartDashboard.putNumber("Right X", RobotContainer.getDriver().getRightJoystickX());
         CommandScheduler.getInstance().run();
     }
 
@@ -120,47 +104,10 @@ public class Robot extends TimedRobot {
     @Override
     public void simulationPeriodic() {}
 
-    public static Arm getArm() {
-        if (arm == null) {
-            arm = new Arm();
+    public static Intake_Nithin getIntakeNithin() {
+        if (intakeNithin == null) {
+            intakeNithin = new Intake_Nithin();
         }
-        return arm;
-    }
-
-    public static Pneumatics getPneumatics() {
-        if (pneumatics == null) {
-            pneumatics = new Pneumatics();
-        }
-        return pneumatics;
-    }
-    /** 
-     * Returns driveTrain object
-     * @return DriveTrain object instantiated in Robot class
-     */
-    public static DriveTrain getDrivetrain() {
-        if (driveTrain == null) {
-            driveTrain = new DriveTrain();
-        }
-        return driveTrain;
-    }
-
-    public static RobotContainer getRobotContainer() {
-        if (robotContainer == null) {
-            robotContainer = new RobotContainer();
-        }
-        return robotContainer;
-    }
-
-    public static Elevator getElevator() {
-        if (elevator == null) elevator = new Elevator();
-        return elevator;
-
-    }
-    public static Turret getTurret() {
-        if (turret == null){
-            turret = new Turret();
-        }
-
-        return turret;
+        return intakeNithin;
     }
 }
