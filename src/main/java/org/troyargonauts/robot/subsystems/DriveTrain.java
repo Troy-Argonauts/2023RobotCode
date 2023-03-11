@@ -287,14 +287,18 @@ public class DriveTrain extends SubsystemBase {
         backRight.setIdleMode(idleMode);
     }
 
+    public double getPitch() {
+        return pigeon.getPitch();
+    }
+
     public FunctionalCommand balance() {
         return new FunctionalCommand(
             () -> Robot.getDrivetrain().resetEncoders(),
             pigeon.getPitch() > 0 ? () -> Robot.getDrivetrain().cheesyDrive(1, 0, 0.1) : () -> Robot.getDrivetrain().cheesyDrive(-1, 0, 0.1),
-            off -> Robot.getDrivetrain().cheesyDrive(0, 0, 0),
-            () -> Math.abs(pigeon.getPitch()) < 5,
+            finished -> Robot.getDrivetrain().cheesyDrive(0, 0, 0),
+            () -> Robot.stable,
             this
         );
     }
-    
+
 }
