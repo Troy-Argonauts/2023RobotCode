@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
         }
 
         timer.reset();
+        timer.start();
     }
     
     @Override
