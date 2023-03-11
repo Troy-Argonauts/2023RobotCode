@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("Drive Out", Robot.getDrivetrain().drivePID(145));
         chooser.addOption("Score and Drive Out", new DropDriveOut());
         chooser.addOption("Drive Hybrid Score", new DriveHybrid());
+        chooser.addOption("Balance PID", Robot.getDrivetrain().balance());
         chooser.addOption("Nothing", null);
 //        chooser.addOption("Turn PID", getDrivetrain().turnPID(90));
 

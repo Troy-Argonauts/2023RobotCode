@@ -86,6 +86,11 @@ public class RobotContainer {
         driver.getTopButton().toggleOnTrue(
                 new InstantCommand(() -> Robot.getLEDs().rainbow(), Robot.getLEDs())
         );
+
+        //Brake Mode
+        driver.getLeftButton().toggleOnTrue(
+                new InstantCommand(() -> Robot.getDrivetrain().brakeMode(), Robot.getDrivetrain())
+        );
     }
 
     /**
