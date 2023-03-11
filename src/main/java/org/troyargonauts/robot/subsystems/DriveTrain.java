@@ -5,8 +5,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import org.troyargonauts.common.util.motorcontrol.LazyCANSparkMax;
 import org.troyargonauts.robot.Constants;
 import org.troyargonauts.robot.Robot;
@@ -275,6 +277,7 @@ public class DriveTrain extends SubsystemBase {
             Robot.getDrivetrain()
         );
     }
+
     public void setIdleMode(CANSparkMax.IdleMode idleMode) {
         frontLeft.setIdleMode(idleMode);
         middleLeft.setIdleMode(idleMode);
@@ -283,4 +286,15 @@ public class DriveTrain extends SubsystemBase {
         middleRight.setIdleMode(idleMode);
         backRight.setIdleMode(idleMode);
     }
+
+    public FunctionalCommand balance() {
+        return new FunctionalCommand(
+            () -> Robot.getDrivetrain().resetEncoders(),
+            pigeon.getPitch() > 0 ? () -> Robot.getDrivetrain().cheesyDrive(1, 0, 0.1) : () -> Robot.getDrivetrain().cheesyDrive(-1, 0, 0.1),
+            off -> Robot.getDrivetrain().cheesyDrive(0, 0, 0),
+            () -> Math.abs(pigeon.getPitch()) < 5,
+            this
+        );
+    }
+    
 }
