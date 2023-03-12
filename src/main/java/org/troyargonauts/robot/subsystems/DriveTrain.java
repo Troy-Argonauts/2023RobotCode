@@ -1,6 +1,7 @@
 package org.troyargonauts.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.math.controller.PIDController;
@@ -103,6 +104,14 @@ public class DriveTrain extends SubsystemBase {
         frontLeft.burnFlash();
         middleLeft.burnFlash();
         backLeft.burnFlash();
+
+        pigeon.configFactoryDefault();
+        pigeon.clearStickyFaults();
+        final Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
+        pigeonConfig.MountPosePitch = 0;
+        pigeonConfig.MountPoseRoll = 0;
+        pigeonConfig.MountPoseYaw = 0;
+        pigeon.configAllSettings(pigeonConfig);
     }
 
     @Override
@@ -273,7 +282,7 @@ public class DriveTrain extends SubsystemBase {
         return new PIDCommand(
             autoBalancePID,
             () -> pigeon.getPitch(),
-            0,
+            1,
             output -> cheesyDrive(output, 0, 0.2),
             Robot.getDrivetrain()
         );

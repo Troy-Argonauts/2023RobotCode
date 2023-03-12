@@ -49,19 +49,19 @@ public final class Constants {
         double DISTANCE_CONVERSION = REVOLUTION_DISTANCE / GEARBOX_SCALE;
 
         //PID Tuning Values
-        double kDriveP = 0.015;
+        double kDriveP = 0.008;
         double kDriveI = 0;
-        double kDriveD = 0.003;
+        double kDriveD = 0;
         double kTurnP = 1;
         double kTurnI = 0;
         double kTurnD = 0;
 
-        double kBalanceP = 1;
+        double kBalanceP = 0.04;
         double kBalanceI = 0;
         double kBalanceD = 0;
         double kDriveTolerance = 0.5;
         double kTurnToleranceDeg = 1;
-        double kBalanceToleranceDeg = 4;
+        double kBalanceToleranceDeg = 0.1;
         double kVelcoityTolerance = 0.05;
 
         //Correction Values

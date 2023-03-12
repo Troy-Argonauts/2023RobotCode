@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
         driveTrain.resetEncoders();
         SmartDashboard.putData("Autonomous modes", chooser);
 //        chooser.setDefaultOption("Drive Straight", new RunCommand(() -> Robot.getDrivetrain().cheesyDrive(0.2, 0, 1), Robot.getDrivetrain()).withTimeout(2.5));
-        chooser.setDefaultOption("Drive Out", Robot.getDrivetrain().drivePID(145));
+        chooser.setDefaultOption("Drive Out", Robot.getDrivetrain().drivePID(84));
         chooser.addOption("Score and Drive Out", new DropDriveOut());
         chooser.addOption("Drive Hybrid Score", new DriveHybrid());
         chooser.addOption("Balance PID", Robot.getDrivetrain().balance());
@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
 //        pigeonConfig.MountPoseRoll = 0;
 //        pigeonConfig.MountPoseYaw = 0;
 //        pigeon.configAllSettings(pigeonConfig);
-        CameraServer.startAutomaticCapture();
+//        CameraServer.startAutomaticCapture();
     }
 
     @Override
@@ -96,8 +96,8 @@ public class Robot extends TimedRobot {
             autonomousCommand.schedule();
         }
 
-        timer.reset();
-        timer.start();
+//        timer.reset();
+//        timer.start();
     }
     
     @Override
